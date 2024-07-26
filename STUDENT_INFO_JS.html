@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        .student-info {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Student Information</h1>
+    <div style="max-width: 400px; margin: 0 auto;">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter student name">
+        
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" placeholder="Enter roll number">
+        
+        <label for="marks">Marks (comma-separated, subject1,score1,subject2,score2,...):</label>
+        <input type="text" id="marks" placeholder="e.g., Math,80,Science,75">
+
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <div id="output" style="max-width: 600px; margin: 20px auto;"></div>
+
+    <script>
+        class Student {
+            constructor(name, rollNumber) {
+                this.name = name.trim();
+                this.rollNumber = rollNumber.trim();
+                this.marks = [];
+            }
+
+            addMarks(subject, score) {
+                this.marks.push({ subject, score });
+            }
+
+            getTotalMarks() {
+                return this.marks.reduce((total, subject) => total + parseInt(subject.score), 0);
+            }
+        }
+
+        const students = [];
+
+        function addStudent() {
+            const name = document.getElementById("studentName").value;
+            const rollNumber = document.getElementById("rollNumber").value;
+            const marksInput = document.getElementById("marks").value;
+            const marksArray = marksInput.split(",");
+
+            if (marksArray.length % 2 !== 0) {
+                alert("Invalid input format for marks. Please use subject1,score1,subject2,score2,...");
+                return;
+            }
+
+            const student = new Student(name, rollNumber);
+
+            for (let i = 0; i < marksArray.length; i += 2) {
+                const subject = marksArray[i].trim();
+                const score = parseInt(marksArray[i + 1].trim());
+                student.addMarks(subject, score);
+            }
+
+            students.push(student);
+            displayStudents();
+        }
+
+        function displayStudents() {
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = "";
+
+            students.forEach((student) => {
+                const totalMarks = student.getTotalMarks();
+                const studentInfo = `${student.name} (Roll No. ${student.rollNumber})`;
+                const studentDetails = `Total Marks: ${totalMarks}`;
+
+                const studentDiv = document.createElement('div');
+                studentDiv.classList.add('student-info');
+                studentDiv.innerHTML = `<p>${studentInfo}<br>${studentDetails}</p>`;
+                outputDiv.appendChild(studentDiv);
+            });
+        }
+    </script>
+</body>
+</html>
+

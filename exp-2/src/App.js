@@ -3,10 +3,10 @@ import UserProfile from './UserProfile';
 
 function App() {
   const user = {
-    name: 'Abishek Pranav S A',
+    name: 'Mithra S',
     age: 20,
     location: 'India, Tamil Nadu',
-    profilePicture: './Abi.jpg',
+    profilePicture: './Mithra.jpg',
   };
 
   const styles = {
